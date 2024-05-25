@@ -16,3 +16,5 @@ class HttpErrors extends Error {
         return new HttpErrors(401, 'Unauthorized user');
     }
 }
+
+export default HttpErrors;
