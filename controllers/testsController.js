@@ -1,7 +1,7 @@
-import testService from '../services/testService';
+import testService from '../services/testService.js';
 
 class TestsController {
-    async createTest(error, req, res, next) {
+    async createTest(req, res, next) {
         try {
             const test = await testService.createTest(req.body);
             return res.json(test);
@@ -9,37 +9,47 @@ class TestsController {
             next(error);
         }
     }
-    async getAllTests(error, req, res, next) {
+    async getAllTests(req, res, next) {
         try {
             const tests = await testService.getAllTests();
-            return res.json(tests);
+            res.json(tests);
         } catch (error) {
             next(error);
         }
     }
-    async getOneTest(error, req, res, next) {
+    async getOneTest(req, res, next) {
         try {
-            const { id } = req.query.id;
+            const { id } = req.params;
             const test = await testService.getOneTest(id);
-            return res.json(test);
+            res.json(test);
         } catch (error) {
             next(error);
         }
     }
-    async updateTest(error, req, res, next) {
+    async updateTest(req, res, next) {
         try {
-            const { id } = req.query.id;
-            const test = await testService.createTest(id);
-            return res.json(test);
+            const { id } = req.params;
+            const test = await testService.updateTest(id, req.body);
+            res.json(test);
         } catch (error) {
             next(error);
         }
     }
-    async deleteTest(error, req, res, next) {
+    async deleteTest(req, res, next) {
         try {
-            const { id } = req.query.id;
-            const test = await testService.createTest(id);
-            return res.json(test);
+            const { id } = req.params;
+            const test = await testService.deleteTest(id);
+            res.json(test);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async checkTestResults(req, res, next) {
+        try {
+            const { id } = req.params;
+            const test = await testService.checkTestResults(id, req.body);
+            res.json(test);
         } catch (error) {
             next(error);
         }

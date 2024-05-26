@@ -1,35 +1,97 @@
-import { Course } from '../models/models';
+import { Result, Retries, Test } from '../models/models.js';
 import HttpErrors from '../exceptions/httpErrors.js';
 
 class TestService {
     async createTest(data) {
-        const existCourse = Course.findOne({ where: { title: data.title } });
-        if (existCourse) {
-            throw HttpErrors.BadRequest('course already exist');
+        const existTest = await Test.findOne({ where: { title: data.title } });
+        console.log(existTest);
+        if (existTest) {
+            throw HttpErrors.BadRequest('test already exist');
         }
-
-        const course = Course.create(data);
-        return course;
+        console.log(data);
+        const test = await Test.create(data);
+        return test;
     }
 
     async getAllTests() {
-        const courses = Course.findAll();
-        return courses;
+        const tests = await Test.findAll();
+        return tests;
     }
 
-    async getOneTest(title) {
-        const courses = Course.findOne({ where: { title } });
-        return courses;
+    async getOneTest(id) {
+        const test = await Test.findByPk(id);
+        return test;
     }
 
-    async updateTest(id) {
-        const course = Course.update({ where: { id } });
-        return course;
+    async updateTest(id, data) {
+        const test = await Test.update(data, { where: { id } });
+        return test;
     }
 
     async deleteTest(id) {
-        const course = Course.destroy({ where: { id } });
-        return course;
+        const test = await Test.destroy({ where: { id } });
+        return test;
+    }
+
+    async checkTestResults(id, data) {
+        const { body, passCondition, title } = await Test.findByPk(id);
+        const { candidateAnswers } = data;
+
+        const candidateAnswersEntries = Object.entries(candidateAnswers);
+        const correctAnswersEntries = Object.entries(body.correctAnswers);
+
+        console.log(candidateAnswersEntries);
+        console.log(correctAnswersEntries);
+
+        if (candidateAnswersEntries.length !== correctAnswersEntries.length) {
+            throw HttpErrors.BadRequest('Answers more than questions, wtf?');
+        }
+
+        const mistakes = [];
+        for (let i = 0; i < candidateAnswersEntries.length; i++) {
+            if (candidateAnswersEntries[i][1] !== correctAnswersEntries[i][1]) {
+                mistakes.push([
+                    candidateAnswersEntries[i][0],
+                    candidateAnswersEntries[i][1]
+                ]);
+            }
+        }
+
+        const testResult = { mistakes: { ...Object.fromEntries(mistakes) } };
+        const admission = body.questionsCount - passCondition;
+
+        if (mistakes.length <= admission) {
+            testResult.passed = true;
+        } else {
+            testResult.passed = false;
+        }
+
+        const testRetries = await Retries.findOne({
+            where: { test_id: id }
+        });
+
+        if (!testRetries) {
+            await Retries.create({
+                test_id: id,
+                count: 1
+            });
+        } else {
+            testRetries.count++;
+            testRetries.save();
+        }
+
+        const results = await Result.create(
+            {
+                title,
+                isPassed: testResult.passed,
+                result: testResult,
+                test_id: id
+            },
+            { include: { model: Test, as: 'test_results' } }
+        );
+        //TODO include model do not displays
+
+        return results;
     }
 }
 

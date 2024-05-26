@@ -32,7 +32,8 @@ const Test = sequelize.define('test', {
 
 const Retries = sequelize.define('retries', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    count: { type: DataTypes.INTEGER }
+    count: { type: DataTypes.INTEGER },
+    test_id: { type: DataTypes.INTEGER }
 });
 
 const Result = sequelize.define('result', {
