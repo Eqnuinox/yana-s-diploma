@@ -58,14 +58,14 @@ class AuthService {
         if (!refreshToken) {
             throw HttpErrors.UnauthorizedError();
         }
-
+        console.log(refreshToken);
         const userData = tokenService.validateRefreshToken(refreshToken);
         const existToken = await tokenService.findToken(refreshToken);
         if (!existToken || !userData) {
             throw HttpErrors.UnauthorizedError();
         }
 
-        const user = User.findByPk(userData.id);
+        const user = await User.findByPk(userData.id);
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({ ...userDto });
 

@@ -7,7 +7,7 @@ import testsRouter from './testsRouter.js';
 
 const router = new Router();
 
-router.use('/users', authMiddleware, userRouter);
+router.use('/users', userRouter);
 router.use('/auth', authRouter);
 router.use('/tests', testsRouter);
 

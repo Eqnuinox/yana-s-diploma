@@ -14,7 +14,6 @@ class AuthController {
 
             const user = await authService.registration(req.body);
             res.cookie('refreshToken', user.refreshToken, {
-                maxAge: 900000,
                 httpOnly: true
             });
             res.json(user);
@@ -28,7 +27,6 @@ class AuthController {
             const { email, password } = req.body;
             const user = await authService.login(email, password);
             res.cookie('refreshToken', user.refreshToken, {
-                maxAge: 900000,
                 httpOnly: true
             });
             res.json(user);
@@ -42,7 +40,7 @@ class AuthController {
             const { refreshToken } = req.cookies;
             await authService.logOut(refreshToken);
             res.clearCookie('refreshToken');
-            return res.status(200);
+            res.status(200).json('LogOut');
         } catch (error) {
             next(error);
         }
@@ -51,10 +49,11 @@ class AuthController {
         try {
             const { refreshToken } = req.cookies;
             const user = await authService.refresh(refreshToken);
+
             res.cookie('refreshToken', user.refreshToken, {
-                maxAge: 900000,
                 httpOnly: true
             });
+            res.status(200).json(user);
         } catch (error) {
             next(error);
         }
