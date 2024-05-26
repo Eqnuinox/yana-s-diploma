@@ -1,0 +1,23 @@
+.container{
+    padding: 20px 40px;
+    border: 1px solid;
+    text-decoration: none;
+    transition: 1s;
+    display: block;
+}
+
+span{
+    transition: 1s;
+    font-weight: 700;
+    font-size: 14.44px;
+    line-height: 19.55px;
+    letter-spacing: 0.18px;
+}
+
+.container:hover{
+    background: #656ED3;
+}
+
+.container:hover span{
+    color: #FFF
+}

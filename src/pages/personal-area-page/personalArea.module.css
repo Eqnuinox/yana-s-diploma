@@ -1,0 +1,30 @@
+.container{
+    background-image: url("./../../assets/images/background/personal-area-background.png");
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+}
+
+.container header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contentContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 150px;
+}
+
+.contentContainer h1{
+    font-weight: 700;
+    font-size: 33.4px;
+    line-height: 40.66px;
+    color: #001A49;
+}
+
+.courses{
+    margin-top: 30px;
+}

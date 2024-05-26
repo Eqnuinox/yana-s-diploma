@@ -1,0 +1,19 @@
+.inputContainer{
+    margin-bottom: 20px;
+}
+
+.inputContainer p{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21.78px;
+    margin-bottom: 10px;
+}
+
+.inputContainer input{
+    width: 413px;
+    padding: 12px;
+    border: 1px solid #656ED3;
+    border-radius: 56px;
+    background-color: inherit;
+    font-size: 14px;
+}

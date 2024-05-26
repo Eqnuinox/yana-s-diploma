@@ -1,25 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
+import { publicRouter } from './navigation/public';
+import { RouterProvider } from 'react-router-dom';
+import { privateRouter } from './navigation/private';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { authAPI } from './services/authService';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const { isAuth } = useSelector((state) => state.authReducer);
+    const [refresh] = authAPI.useRefreshMutation();
+    const fetchRefresh = async () => {
+        return await refresh();
+    };
+
+    useEffect(() => {
+        if (!localStorage.getItem('accessToken')) {
+            fetchRefresh().then((data) => {
+                localStorage.setItem('accessToken', data?.data?.accessToken);
+            });
+        }
+        
+
+    }, []);
+
+    return (
+        <RouterProvider router={isAuth ? privateRouter : publicRouter}>
+            <div className="App"></div>
+        </RouterProvider>
+    );
 }
 
 export default App;
