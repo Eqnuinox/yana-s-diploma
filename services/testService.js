@@ -80,18 +80,29 @@ class TestService {
             testRetries.save();
         }
 
-        const results = await Result.create(
-            {
-                title,
-                isPassed: testResult.passed,
-                result: testResult,
-                test_id: id
-            },
-            { include: { model: Test, as: 'test_results' } }
-        );
+        const existResult = await Result.findOne({ where: { title } });
+        if (!existResult) {
+            const results = await Result.create(
+                {
+                    title,
+                    isPassed: testResult.passed,
+                    result: testResult,
+                    test_id: id
+                },
+                { include: { model: Test, as: 'test_results' } }
+            );
+            return results;
+        }
+        existResult.update({
+            isPassed: testResult.passed,
+            result: testResult
+        });
+
+        existResult.save();
+
         //TODO include model do not displays
 
-        return results;
+        return existResult;
     }
 }
 

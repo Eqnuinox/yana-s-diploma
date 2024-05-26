@@ -5,25 +5,25 @@ class CoursesController {
             next(error);
         }
     }
-    async getAllCourses(error, req, res, next) {
+    async getAllCourses(req, res, next) {
         try {
         } catch (error) {
             next(error);
         }
     }
-    async getOneCourse(error, req, res, next) {
+    async getOneCourse(req, res, next) {
         try {
         } catch (error) {
             next(error);
         }
     }
-    async updateCourse(error, req, res, next) {
+    async updateCourse(req, res, next) {
         try {
         } catch (error) {
             next(error);
         }
     }
-    async deleteCourse(error, req, res, next) {
+    async deleteCourse(req, res, next) {
         try {
         } catch (error) {
             next(error);
