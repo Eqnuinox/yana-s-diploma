@@ -19,7 +19,8 @@ const Token = sequelize.define('token', {
 const Course = sequelize.define('course', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: { type: DataTypes.STRING },
-    description: { type: DataTypes.STRING }
+    description: { type: DataTypes.STRING },
+    body: { type: DataTypes.JSON }
 });
 
 const Test = sequelize.define('test', {
@@ -52,8 +53,8 @@ Token.belongsTo(User, { foreignKey: 'user_id', as: 'user_refresh_token' });
 Course.hasMany(User, { foreignKey: 'course_id', as: 'user_courses' });
 User.belongsTo(Course, { foreignKey: 'course_id', as: 'user_courses' });
 
-Test.hasMany(Course, { foreignKey: 'test_id', as: 'course_tests' });
-Course.belongsTo(Test, { foreignKey: 'test_id', as: 'course_tests' });
+Course.hasMany(Test, { foreignKey: 'course_id', as: 'course_tests' });
+Test.belongsTo(Course, { foreignKey: 'course_id', as: 'course_tests' });
 
 Retries.hasMany(Test, { foreignKey: 'retries_id', as: 'tests_retries' });
 Test.belongsTo(Retries, { foreignKey: 'retries_id', as: 'tests_retries' });

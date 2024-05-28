@@ -7,10 +7,10 @@ import testsRouter from './testsRouter.js';
 
 const router = new Router();
 
-router.use('/users', userRouter);
+router.use('/users', authMiddleware, userRouter);
 router.use('/auth', authRouter);
 router.use('/tests', testsRouter);
 
-router.use('/course', coursesRouter);
+router.use('/courses', coursesRouter);
 
 export default router;

@@ -1,35 +1,37 @@
-import { Course } from '../models/models';
+import { Course } from '../models/models.js';
 import HttpErrors from '../exceptions/httpErrors.js';
 
 class CourseService {
     async createCourse(data) {
-        const existCourse = Course.findOne({ where: { title: data.title } });
+        const existCourse = await Course.findOne({
+            where: { title: data.title }
+        });
         if (existCourse) {
             throw HttpErrors.BadRequest('course already exist');
         }
 
         const course = Course.create(data);
-        return res.json(course);
+        return course;
     }
 
     async getAllCourses() {
         const courses = Course.findAll();
-        return res.json(courses);
+        return courses;
     }
 
-    async getOneCourse(title) {
-        const course = Course.findOne({ where: { title } });
-        return res.json(course);
+    async getOneCourse(id) {
+        const course = Course.findByPk(id);
+        return course;
     }
 
-    async updateCourse(id) {
-        const course = Course.update({ where: { id } });
-        return res.json(course);
+    async updateCourse(data, id) {
+        const course = Course.update(data, { where: { id } });
+        return course;
     }
 
     async deleteCourse(id) {
         const course = Course.destroy({ where: { id } });
-        return res.json(course);
+        return course;
     }
 }
 

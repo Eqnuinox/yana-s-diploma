@@ -17,10 +17,9 @@ class TestService {
         const tests = await Test.findAll();
         return tests;
     }
-
-    async getOneTest(id) {
-        const test = await Test.findByPk(id);
-        return test;
+    async getAllCourseTests(id) {
+        const tests = await Test.findAll({ where: { course_id: id } });
+        return tests;
     }
 
     async updateTest(id, data) {
