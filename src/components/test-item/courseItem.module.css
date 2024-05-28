@@ -1,0 +1,27 @@
+.container{
+    background-color: rgba(205, 16, 255, .05);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 813px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.infoContainer{
+    max-width: 455px;
+}
+
+.infoContainer h3{
+    color: #001A49;
+    font-size: 17.43px;
+    line-height: 17.43px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.infoContainer p{
+
+}

@@ -2,10 +2,10 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { userAPI } from '../services/userService';
 import { authAPI } from '../services/authService';
 import authReducer from './reducesrs/AuthSlice';
+import { courseAPI } from '../services/courseService';
 
 const rootReducer = combineReducers({
     authReducer,
-    [userAPI.reducerPath]: userAPI.reducer,
     [authAPI.reducerPath]: authAPI.reducer
 });
 

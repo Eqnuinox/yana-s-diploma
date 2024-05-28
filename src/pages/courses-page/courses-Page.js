@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import styles from './personalArea.module.css';
+import React from 'react';
+import styles from './coursesPage.module.css';
 import logo from '../../assets/images/logo/logo-white.svg';
 import CustomBtn from '../../components/custom-btn';
 import { CourseItem } from '../../components';
@@ -8,10 +8,12 @@ import { useDispatch } from 'react-redux';
 import { authSlice } from '../../store/reducesrs/AuthSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { courseAPI } from '../../services/courseService';
-import { userAPI } from '../../services/userService';
+import CourseBodyItem from '../../components/course-body-item/course-body-item';
 
-const PersonalAreaPage = () => {
-    const { data } = courseAPI.useGetAllCoursesQuery();
+const CoursesPage = () => {
+    const search = useLocation().search.split('=')[1];
+    const { data } = courseAPI.useGetOneCourseQuery(search);
+    console.log(data?.body?.list);
 
     const [logout, { isLoading }] = authAPI.useLogoutMutation();
     const dispatch = useDispatch();
@@ -30,6 +32,10 @@ const PersonalAreaPage = () => {
         }
     };
 
+    const back = async () => {
+        navigate(-1);
+    };
+
     return (
         <div className={styles.container}>
             <header>
@@ -42,16 +48,21 @@ const PersonalAreaPage = () => {
                     borderColor="#656ED3"
                 />
             </header>
+            <div className={styles.back_button}>
+                <CustomBtn
+                    onSubmit={back}
+                    color="#FFF"
+                    backgroundColor="#656ED3"
+                    name="Назад"
+                    borderColor="#656ED3"
+                />
+            </div>
             <div className={styles.contentContainer}>
-                <h1>Доступные курсы</h1>
+                <h1>{data?.body?.tittle}</h1>
+                <p>as</p>
                 <div className={styles.courses}>
-                    {data?.map(({ title, description, id }) => (
-                        <CourseItem
-                            key={id}
-                            name={title}
-                            description={description}
-                            url={`/course/?id=${id}`}
-                        />
+                    {data?.body?.list.map((item) => (
+                        <CourseBodyItem list={item} />
                     ))}
                 </div>
             </div>
@@ -59,4 +70,4 @@ const PersonalAreaPage = () => {
     );
 };
 
-export default PersonalAreaPage;
+export default CoursesPage;
